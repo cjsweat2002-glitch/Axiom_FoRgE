@@ -40,12 +40,17 @@ python3 -m unittest discover -s tests -v
 
 `inspect` is read-only and presents the goal, contract, policy, and proposed
 comparison. `run` appends one event and prints its sequence and artifact digests.
-`replay` checks the event chain and object hashes, recomputes the selected report,
+`replay` checks the event chain and object hashes, recomputes every retained report,
 and requires byte-identical results. `report` performs the same verification before
 printing. Use `--store /path/to/evidence` on `run`, `replay`, and `report` to select
 a store other than `.axiom-forge/`. A malformed input or failed integrity check
 exits with code 2; command success (0) means the operation completed, not that a
 candidate was accepted. Candidate outcomes appear in the report.
+
+Human-readable reports quote goals, candidate IDs, and evidence paths as ASCII
+JSON strings, escaping terminal controls and embedded line breaks. Error details
+are escaped the same way. This changes display only; original evidence bytes and
+the values returned by parsing JSON output remain intact.
 
 An optional install with `python3 -m pip install .` exposes the same commands as
 `axiom-forge`. Packaging uses setuptools; there are no runtime dependencies.
@@ -97,9 +102,11 @@ existing objects and events are never overwritten by the CLI. Interrupted writes
 or lock directories require investigation, not automatic deletion or history
 repair. Preserve the original evidence before an authorized recovery.
 
-Replay verifies all retained event links and object hashes, then re-evaluates the
-selected event with engine `fixture-v1`. Keep engine behavior versioned; a later
-engine must not silently reinterpret historical outcomes. Reports and summaries
+Before appending or replaying, the store validates every retained event's required
+fields, exact artifact bindings, object hashes, and input/report consistency with
+engine `fixture-v1`. Invalid history is rejected without appending or repairing it.
+Keep engine behavior versioned; a later engine must not silently reinterpret
+historical outcomes. Reports and summaries
 are derived artifacts; raw evidence stays authoritative.
 
 This is application-level append-only storage with tamper detection, not a signed

@@ -72,6 +72,74 @@ class StoreTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "artifact lineage mismatch"):
             self.store.replay(1)
 
+    def assert_append_refuses_without_changes(self, message):
+        def snapshot():
+            return {path.relative_to(self.store.root): path.read_bytes()
+                    for path in self.store.root.rglob("*") if path.is_file()}
+
+        before = snapshot()
+        with self.assertRaisesRegex(ValueError, message):
+            self.store.record(self.raw)
+        self.assertEqual(snapshot(), before)
+        self.assertFalse((self.store.root / ".writer-lock").exists())
+
+    def test_append_refuses_empty_historical_artifacts(self):
+        event = self.store.record(self.raw)
+        event["artifacts"] = {}
+        (self.store.root / "events" / "00000001.json").write_bytes(canonical(event))
+        self.assert_append_refuses_without_changes("invalid event artifacts")
+
+    def test_append_refuses_historical_report_with_valid_hash_but_false_approval(self):
+        event = self.store.record(self.raw)
+        report = self.store.replay(1)
+        report["human_approval"] = "approved"
+        event["artifacts"]["report"] = self.store.put(canonical(report))
+        (self.store.root / "events" / "00000001.json").write_bytes(canonical(event))
+        self.assert_append_refuses_without_changes("replay result mismatch")
+
+    def test_append_validates_historical_structure_and_artifact_bindings(self):
+        root = self.store.root
+        mutations = [
+            (lambda e: e.pop("previous"), "event must contain exactly"),
+            (lambda e: e.update(sequence=True), "event lineage mismatch"),
+            (lambda e: e.update(extra=True), "event must contain exactly"),
+            (lambda e: e.update(artifacts=[]), "invalid event artifacts"),
+            (lambda e: e["artifacts"].pop("input"), "invalid event artifacts"),
+            (lambda e: e["artifacts"].pop("report"), "invalid event artifacts"),
+            (lambda e: e["artifacts"].pop("contract"), "invalid event artifacts"),
+            (lambda e: e["artifacts"].pop("patch:passing"), "artifact lineage mismatch"),
+            (lambda e: e["artifacts"].update(extra=e["artifacts"]["input"]),
+             "artifact lineage mismatch"),
+            (lambda e: e["artifacts"].update(contract=e["artifacts"]["policy"]),
+             "artifact lineage mismatch"),
+        ]
+        for index, (mutate, message) in enumerate(mutations):
+            with self.subTest(index=index):
+                self.store = EvidenceStore(root / str(index))
+                event = self.store.record(self.raw)
+                path = self.store.root / "events" / "00000001.json"
+                mutate(event)
+                path.write_bytes(canonical(event))
+                self.assert_append_refuses_without_changes(message)
+
+    def test_replaying_later_event_rejects_incoherent_earlier_evidence(self):
+        first = self.store.record(self.raw)
+        second = self.store.record(self.raw)
+        report = self.store.replay(1)
+        report["human_approval"] = "approved"
+        false_report = self.store.put(canonical(report))
+        for artifacts, message in (({}, "invalid event artifacts"),
+                                   ({**first["artifacts"], "report": false_report},
+                                    "replay result mismatch")):
+            with self.subTest(message=message):
+                altered = canonical({**first, "artifacts": artifacts})
+                (self.store.root / "events" / "00000001.json").write_bytes(altered)
+                # Keep the hash chain valid to isolate semantic history validation.
+                second["previous"] = fingerprint(altered)
+                (self.store.root / "events" / "00000002.json").write_bytes(canonical(second))
+                with self.assertRaisesRegex(ValueError, message):
+                    self.store.replay(2)
+
     def test_lock_blocks_writers_without_changing_history(self):
         (self.store.root / ".writer-lock").mkdir()
         with self.assertRaisesRegex(ValueError, "locked"):

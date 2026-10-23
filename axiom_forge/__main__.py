@@ -1,12 +1,18 @@
 """Command-line entry point. No command applies or executes candidate patches."""
 
 import argparse
+import json
 from pathlib import Path
 import sys
 
 from . import __version__
 from .store import EvidenceStore
 from .workflow import canonical, decode, evaluate
+
+
+def terminal_label(value: str) -> str:
+    """Quote untrusted text as one ASCII line without altering stored evidence."""
+    return json.dumps(value, ensure_ascii=True)
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -35,12 +41,13 @@ def main(argv: list[str] | None = None) -> int:
             report = EvidenceStore(args.store).replay(args.event)
             if args.command == "report":
                 print(f"Axiom_FoRgE — event {args.event}\n")
-                print(f"Goal: {report['goal']}\n")
+                print(f"Goal: {terminal_label(report['goal'])}\n")
                 print("Fixture comparison only. Human approval: pending.\n")
                 manifest = args.store / "events" / f"{args.event:08d}.json"
-                print(f"Evidence manifest (exact input and artifact digests): {manifest}\n")
+                print(f"Evidence manifest (exact input and artifact digests): "
+                      f"{terminal_label(str(manifest))}\n")
                 for candidate in report["candidates"]:
-                    print(f"{candidate['id']}: {candidate['status']} ({candidate['reason']}); "
+                    print(f"{terminal_label(candidate['id'])}: {candidate['status']} ({candidate['reason']}); "
                           f"plain baseline: {candidate['plain_baseline']}")
                     print(f"  Proposed next step: {candidate['diagnostic_proposal']}")
                     print(f"  Patch SHA-256: {candidate['patch_sha256']}")
@@ -54,7 +61,7 @@ def main(argv: list[str] | None = None) -> int:
         print(canonical(output).decode("utf-8"), end="")
         return 0
     except (OSError, ValueError, KeyError) as error:
-        print(f"axiom-forge: {error}", file=sys.stderr)
+        print(f"axiom-forge: {terminal_label(str(error))}", file=sys.stderr)
         return 2
 
 

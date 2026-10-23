@@ -3,7 +3,7 @@
 import os
 from pathlib import Path
 
-from .workflow import ENGINE, canonical, decode, evaluate, fingerprint, require
+from .workflow import ENGINE, canonical, decode, evaluate, fields, fingerprint, require
 
 
 class EvidenceStore:
@@ -38,16 +38,31 @@ class EvidenceStore:
             require(path.name == f"{sequence:08d}.json", "event sequence has a gap")
             data = path.read_bytes()
             event = decode(data)
-            require(event.get("sequence") == sequence and event.get("previous") == previous,
+            fields(event, {"sequence", "previous", "engine", "artifacts"}, "event")
+            require(type(event["sequence"]) is int and event["sequence"] == sequence
+                    and event["previous"] == previous,
                     "event lineage mismatch")
-            require(event.get("engine") == ENGINE, "unsupported event engine")
-            # Verify every referenced object, including older runs.
-            require(isinstance(event.get("artifacts"), dict), "invalid event artifacts")
-            for digest in event["artifacts"].values():
-                self.get(digest)
+            require(event["engine"] == ENGINE, "unsupported event engine")
+            # Every retained event must be coherent before append or replay.
+            self._validate_artifacts(event["artifacts"])
             previous = fingerprint(data)
             events.append(event)
         return events
+
+    def _validate_artifacts(self, artifacts: dict) -> None:
+        required = {"input", "report", "baseline", "contract", "policy"}
+        require(isinstance(artifacts, dict) and required <= artifacts.keys(),
+                "invalid event artifacts")
+        for digest in artifacts.values():
+            self.get(digest)
+        case = decode(self.get(artifacts["input"]))
+        report = evaluate(case)
+        require(canonical(report) == self.get(artifacts["report"]), "replay result mismatch")
+        expected = {"input": artifacts["input"], "report": fingerprint(canonical(report)),
+                    **report["context"],
+                    **{f"patch:{c['id']}": fingerprint(c['patch'].encode("utf-8"))
+                       for c in case["candidates"]}}
+        require(artifacts == expected, "artifact lineage mismatch")
 
     def record(self, raw: bytes) -> dict:
         case = decode(raw)
@@ -85,13 +100,5 @@ class EvidenceStore:
         events = self.events()
         require(1 <= sequence <= len(events), "event does not exist")
         event = events[sequence - 1]
-        artifacts = event["artifacts"]
-        case = decode(self.get(artifacts["input"]))
-        report = evaluate(case)
-        require(canonical(report) == self.get(artifacts["report"]), "replay result mismatch")
-        expected = {"input": artifacts["input"], "report": fingerprint(canonical(report)),
-                    **report["context"],
-                    **{f"patch:{c['id']}": fingerprint(c['patch'].encode("utf-8"))
-                       for c in case["candidates"]}}
-        require(artifacts == expected, "artifact lineage mismatch")
-        return report
+        # events() already recomputed and checked every report against its input.
+        return decode(self.get(event["artifacts"]["report"]))
