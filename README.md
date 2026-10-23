@@ -66,6 +66,12 @@ historical-corruption and terminal-injection cases. See
 results, limitations, and the next expansion gate. A configured CI job is not
 evidence that it ran or passed.
 
+The [bounded execution review packet](docs/execution/mon-11/contract.md) freezes
+one proposed repository task, checks, permissions, limits, and inspection evidence.
+Live containment is unvalidated and execution remains blocked pending independent
+review and explicit human authorization. The packet runs no task baseline or
+candidate and introduces no execution adapter.
+
 ## Recorded cost/quality comparison
 
 `python3 -m axiom_forge cost-evaluate tests/fixtures/cost/matched.json` compares

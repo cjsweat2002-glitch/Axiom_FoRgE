@@ -1,0 +1,76 @@
+{
+  "candidate_run": null,
+  "commands": [
+    {
+      "argv": [
+        "git",
+        "ls-tree",
+        "-r",
+        "42430020a425aeece7529d51e9fb4a257e5f4231"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "100644 blob e7cbce042fed3b6cf21a170dd08f31c361a2cc75\t.github/workflows/verify.yml\n100644 blob 009283f4d6f8f5624f4f518f70bfcd49726976e9\t.gitignore\n100644 blob cdb1cdd4f314b6babb50d5a0c1d5c3af95d0900e\tAGENTS.md\n100644 blob b58e5addace6a332912d2831f0ff009371fcb733\tMANIFEST.in\n100644 blob ed29bd90b68130310f7f67ea71aa12707c213bfb\tREADME.md\n100644 blob 777b6959e10b49d2bb33691fd6f6390254085920\taxiom_forge/__init__.py\n100644 blob 0797883d7b8abf67d2afde388970b69ac94de9b1\taxiom_forge/__main__.py\n100644 blob 43c61b65a5744dea9b8015f6430fabf01aac6876\taxiom_forge/ambiguity.py\n100644 blob ab0342165e8b7d28d67f96e42a6f0e87114ddb08\taxiom_forge/cost.py\n100644 blob 7887c322d4d1034f9fe2b72d928f8a15f894709b\taxiom_forge/project.py\n100644 blob e90c0c3bfaaa48ed317e8fa0fbfb4cd4d74319a1\taxiom_forge/store.py\n100644 blob 5f33fb51b76e364acafc1c245c8abe6064c41548\taxiom_forge/workflow.py\n100644 blob e8786ad22c2e86e4345cac44d5ff1b36d86c3332\tdocs/cost-evaluation.md\n100644 blob 48b133269f48ec755fa2ce3851240fe8308088fd\tdocs/verification.md\n100644 blob bc517196ae62b940e2b14e3f1acc051792af9ad1\tpyproject.toml\n100644 blob 5ca0174a7924668760b674c3880958176dd91de5\trequirements-verification.txt\n100644 blob 53f3b8e5623378845a0d2e7c2d7932cf8b6d80b9\tscripts/smoke_installed.py\n100644 blob af2e939e89b98c7b6b98044360c53796bc185673\tscripts/verify.sh\n100644 blob 2cbecd3c298fdd6e1794587909d1f509ce00a30c\ttests/fixtures/README.md\n100644 blob 42e6cf836e8980cc73d22fb7f82459c27463b078\ttests/fixtures/ambiguity/README.md\n100644 blob 7225fd01628d34dc69421475770174c6863d8f79\ttests/fixtures/ambiguity/ambiguous.json\n100644 blob 89890ca49137296849696d7b0663f619cc35cd93\ttests/fixtures/ambiguity/conflicting.json\n100644 blob 338e2941f4212f3e1cd4cc9432153dbf9614c028\ttests/fixtures/ambiguity/expected.json\n100644 blob 71e7c7e7446a765f11893e51accd806394ff0e76\ttests/fixtures/ambiguity/insufficient-evidence.json\n100644 blob 7cb8bedc46a7711e340fab638f0bcf785138d1bd\ttests/fixtures/ambiguity/valid.json\n100644 blob 934e293ab625e8e99360cb2edf12948467b0235f\ttests/fixtures/baseline.json\n100644 blob d6d85108ca0a9b91b1e3948faea09a1a74f29a78\ttests/fixtures/cost/README.md\n100644 blob 12407899b6c21d06550377f0bdbaee90f071a869\ttests/fixtures/cost/expected.json\n100644 blob 6163503ed116e0284322dbb1e44ebf4960e70f10\ttests/fixtures/cost/matched.json\n100644 blob df1c90bdefb74b5b43923376202dda0722729428\ttests/fixtures/expected.json\n100644 blob ed5521888430b903410c9fd536e169304e626e3b\ttests/fixtures/prior-contract.json\n100644 blob e343d76dacf366ddd01aadd2682d3ad3517853dc\ttests/test_ambiguity.py\n100644 blob ce6dc109725b688892c07ec534cfe99d069695e8\ttests/test_ambiguity_cli.py\n100644 blob 317330cd871dea43cecf14a9882d59dd8dceb4dc\ttests/test_cli.py\n100644 blob 4feedf4996994ab324ddccd769e4125b00d18bf5\ttests/test_cost.py\n100644 blob 54474a27c04e8a34ebb1a8e27e40a9bd9e93ff7c\ttests/test_store.py\n100644 blob f4254d8520dba446f7cde7780267bb147f3cd34b\ttests/test_workflow.py\n",
+      "stdout_sha256": "944f49606e6212fc7da9ba50b43144aed8499c4250ca7ea9d3ede877786543b7"
+    },
+    {
+      "argv": [
+        "python3",
+        "--version"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "Python 3.15.1\n",
+      "stdout_sha256": "36eccae64c73138a6ce898fb4100d385bf3618b6f07bf251cdfe60cccdd43a41"
+    },
+    {
+      "argv": [
+        "rg",
+        "-n",
+        "subprocess|exec\\(|eval\\(|compile\\(|os.system|Popen|socket|urlopen",
+        "axiom_forge",
+        "tests",
+        "scripts"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "tests/test_cli.py:3:import subprocess\ntests/test_cli.py:15:        return subprocess.run([sys.executable, \"-m\", \"axiom_forge\", *map(str, args)],\ntests/test_cost.py:5:import subprocess\ntests/test_cost.py:274:        return subprocess.run([sys.executable, \"-m\", \"axiom_forge\", *map(str, args)],\ntests/test_ambiguity_cli.py:3:import subprocess\ntests/test_ambiguity_cli.py:17:        return subprocess.run([sys.executable, \"-m\", \"axiom_forge\", *map(str, args)],\nscripts/smoke_installed.py:6:import subprocess\nscripts/smoke_installed.py:20:        result = subprocess.run([str(cli), *map(str, args)], capture_output=True,\n",
+      "stdout_sha256": "6c621c206dad5cd89f365f78b60c43d1baf0f46faca856a0ac77c6e393c2172a"
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "exit_code": 0,
+      "stderr": "test_curated_outcomes_determinism_and_pending_authority (test_ambiguity.AmbiguityTests.test_curated_outcomes_determinism_and_pending_authority) ... ok\ntest_only_explicit_structure_is_compared (test_ambiguity.AmbiguityTests.test_only_explicit_structure_is_compared) ... ok\ntest_smallest_pairwise_proposals_and_unknown_discriminators (test_ambiguity.AmbiguityTests.test_smallest_pairwise_proposals_and_unknown_discriminators) ... ok\ntest_strict_schema_rejects_malformed_inputs_and_authority_expansion (test_ambiguity.AmbiguityTests.test_strict_schema_rejects_malformed_inputs_and_authority_expansion) ... ok\ntest_evaluation_is_read_only_and_requires_exact_recorded_input (test_ambiguity.RecordedAmbiguityTests.test_evaluation_is_read_only_and_requires_exact_recorded_input) ... ok\ntest_evidence_binding_and_hash_corruption_are_detected (test_ambiguity.RecordedAmbiguityTests.test_evidence_binding_and_hash_corruption_are_detected) ... ok\ntest_forged_history_blocks_append_replay_and_evaluation_without_repair (test_ambiguity.RecordedAmbiguityTests.test_forged_history_blocks_append_replay_and_evaluation_without_repair) ... ok\ntest_mixed_history_preserves_raw_bytes_and_context (test_ambiguity.RecordedAmbiguityTests.test_mixed_history_preserves_raw_bytes_and_context) ... ok\ntest_new_cycle_does_not_erase_previous_findings_or_grant_approval (test_ambiguity.RecordedAmbiguityTests.test_new_cycle_does_not_erase_previous_findings_or_grant_approval) ... ok\ntest_explicit_record_and_read_only_evaluation_cycle (test_ambiguity_cli.AmbiguityCliTests.test_explicit_record_and_read_only_evaluation_cycle) ... ok\ntest_malformed_input_and_corrupt_history_fail_safely (test_ambiguity_cli.AmbiguityCliTests.test_malformed_input_and_corrupt_history_fail_safely) ... ok\ntest_untrusted_text_is_inert_and_safely_rendered_without_changing_bytes (test_ambiguity_cli.AmbiguityCliTests.test_untrusted_text_is_inert_and_safely_rendered_without_changing_bytes) ... ok\ntest_errors_are_nonzero_and_do_not_claim_success (test_cli.CliTests.test_errors_are_nonzero_and_do_not_claim_success) ... ok\ntest_inspect_record_replay_and_export (test_cli.CliTests.test_inspect_record_replay_and_export) ... ok\ntest_untrusted_error_details_are_escaped (test_cli.CliTests.test_untrusted_error_details_are_escaped) ... ok\ntest_untrusted_labels_are_escaped_but_evidence_is_preserved (test_cli.CliTests.test_untrusted_labels_are_escaped_but_evidence_is_preserved) ... ok\ntest_invalid_input_and_corrupt_history_exit_two_without_writes (test_cost.CostCliTests.test_invalid_input_and_corrupt_history_exit_two_without_writes) ... ok\ntest_preview_record_replay_and_terminal_safety (test_cost.CostCliTests.test_preview_record_replay_and_terminal_safety) ... ok\ntest_changed_acceptance_binding_cannot_be_replayed_as_old_report (test_cost.CostTests.test_changed_acceptance_binding_cannot_be_replayed_as_old_report) ... ok\ntest_claims_and_self_review_never_grant_independent_acceptance (test_cost.CostTests.test_claims_and_self_review_never_grant_independent_acceptance) ... ok\ntest_curated_arithmetic_includes_failed_attempts_and_retries (test_cost.CostTests.test_curated_arithmetic_includes_failed_attempts_and_retries) ... ok\ntest_decimal_precision_is_explicit_and_not_ambient (test_cost.CostTests.test_decimal_precision_is_explicit_and_not_ambient) ... ok\ntest_duplicate_unknown_and_malformed_records_fail_closed (test_cost.CostTests.test_duplicate_unknown_and_malformed_records_fail_closed) ... ok\ntest_exact_input_artifacts_and_mixed_engine_replay (test_cost.CostTests.test_exact_input_artifacts_and_mixed_engine_replay) ... ok\ntest_failed_generation_without_candidate_retains_cost_and_refusal (test_cost.CostTests.test_failed_generation_without_candidate_retains_cost_and_refusal) ... ok\ntest_incomplete_inventory_and_missing_final_selection (test_cost.CostTests.test_incomplete_inventory_and_missing_final_selection) ... ok\ntest_invalid_measurements_fail_closed (test_cost.CostTests.test_invalid_measurements_fail_closed) ... ok\ntest_missing_latency_does_not_invent_zero_or_hide_valid_costs (test_cost.CostTests.test_missing_latency_does_not_invent_zero_or_hide_valid_costs) ... ok\ntest_missing_tasks_and_mismatched_context_never_drop_observations (test_cost.CostTests.test_missing_tasks_and_mismatched_context_never_drop_observations) ... ok\ntest_mixed_currency_is_not_converted_or_summed (test_cost.CostTests.test_mixed_currency_is_not_converted_or_summed) ... ok\ntest_multiple_accepted_attempts_count_only_the_selected_task_result (test_cost.CostTests.test_multiple_accepted_attempts_count_only_the_selected_task_result) ... ok\ntest_partial_missing_and_unprovenanced_costs_preserve_subtotals (test_cost.CostTests.test_partial_missing_and_unprovenanced_costs_preserve_subtotals) ... ok\ntest_stale_review_and_unknown_or_contradictory_checks (test_cost.CostTests.test_stale_review_and_unknown_or_contradictory_checks) ... ok\ntest_unknown_acceptance_cannot_make_a_smaller_denominator_look_complete (test_cost.CostTests.test_unknown_acceptance_cannot_make_a_smaller_denominator_look_complete) ... ok\ntest_zero_acceptance_is_not_zero_cost_or_infinity (test_cost.CostTests.test_zero_acceptance_is_not_zero_cost_or_infinity) ... ok\ntest_append_refuses_empty_historical_artifacts (test_store.StoreTests.test_append_refuses_empty_historical_artifacts) ... ok\ntest_append_refuses_historical_report_with_valid_hash_but_false_approval (test_store.StoreTests.test_append_refuses_historical_report_with_valid_hash_but_false_approval) ... ok\ntest_append_validates_historical_structure_and_artifact_bindings (test_store.StoreTests.test_append_validates_historical_structure_and_artifact_bindings) ... ok\ntest_broken_chain_and_deleted_event_are_detected (test_store.StoreTests.test_broken_chain_and_deleted_event_are_detected) ... ok\ntest_contract_changes_preserve_historical_outcomes (test_store.StoreTests.test_contract_changes_preserve_historical_outcomes) ... ok\ntest_exact_inputs_deduplication_and_append_only_history (test_store.StoreTests.test_exact_inputs_deduplication_and_append_only_history) ... ok\ntest_invalid_event_and_digest_are_rejected (test_store.StoreTests.test_invalid_event_and_digest_are_rejected) ... ok\ntest_invalid_input_does_not_create_evidence (test_store.StoreTests.test_invalid_input_does_not_create_evidence) ... ok\ntest_lock_blocks_writers_without_changing_history (test_store.StoreTests.test_lock_blocks_writers_without_changing_history) ... ok\ntest_modified_object_is_detected_and_never_overwritten (test_store.StoreTests.test_modified_object_is_detected_and_never_overwritten) ... ok\ntest_replay_rejects_forged_result_and_artifact_links (test_store.StoreTests.test_replay_rejects_forged_result_and_artifact_links) ... ok\ntest_replaying_later_event_rejects_incoherent_earlier_evidence (test_store.StoreTests.test_replaying_later_event_rejects_incoherent_earlier_evidence) ... ok\ntest_acceptance_requires_separate_review (test_workflow.WorkflowTests.test_acceptance_requires_separate_review) ... ok\ntest_ambiguous_json_is_rejected (test_workflow.WorkflowTests.test_ambiguous_json_is_rejected) ... ok\ntest_baseline_outcomes_match_curated_oracle (test_workflow.WorkflowTests.test_baseline_outcomes_match_curated_oracle) ... ok\ntest_each_context_change_invalidates_acceptance (test_workflow.WorkflowTests.test_each_context_change_invalidates_acceptance) ... ok\ntest_evaluation_is_deterministic_and_does_not_mutate_inputs (test_workflow.WorkflowTests.test_evaluation_is_deterministic_and_does_not_mutate_inputs) ... ok\ntest_invalid_contracts_and_evidence_are_rejected (test_workflow.WorkflowTests.test_invalid_contracts_and_evidence_are_rejected) ... ok\ntest_missing_observation_is_unknown (test_workflow.WorkflowTests.test_missing_observation_is_unknown) ... ok\ntest_verifier_false_acceptance_stays_unknown (test_workflow.WorkflowTests.test_verifier_false_acceptance_stays_unknown) ... ok\n\n----------------------------------------------------------------------\nRan 55 tests in 1.340s\n\nOK\n",
+      "stderr_sha256": "b06a37e729338d666dd3d8296b21c9edb9e39fb264b19b8c1742ea9f75713b51",
+      "stdout": "",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "execution_authorization": null,
+  "independent_review": null,
+  "isolation_validation": "incomplete: repository data boundary inspected; live containment untested",
+  "manual_findings": [
+    "FixtureAdapter.observe returns supplied observations; no execution adapter exists.",
+    "All subprocess matches are in trusted CLI tests or installed smoke tooling and invoke the existing project CLI.",
+    "Existing ambiguity CLI regression retains code-shaped strings as data and checks that its marker was not created.",
+    "EvidenceStore uses exclusive creation and hashes; it does not isolate a hostile process or authenticate a reviewer.",
+    "Python isolated mode in delivery tooling concerns import selection, not operating-system containment."
+  ],
+  "recorded_at_utc": "2026-10-23T03:57:36.452844+00:00",
+  "revision": "42430020a425aeece7529d51e9fb4a257e5f4231",
+  "scope": "Trusted existing fixture regressions and read-only source inspection; not task execution or containment validation.",
+  "task_baseline_run": null,
+  "tracked_baseline_files_verified_before_and_after": 37,
+  "version": 1
+}

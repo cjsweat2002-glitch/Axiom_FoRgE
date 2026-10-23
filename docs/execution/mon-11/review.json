@@ -1,0 +1,61 @@
+{
+  "authorized_execution_actions": [],
+  "baseline_revision": "42430020a425aeece7529d51e9fb4a257e5f4231",
+  "bindings_sha256": {
+    "baseline.json": "e23f4626ee66dee66e89349c7ccc5b49abdfeb40dd148d358d1c1db2f55e2af1",
+    "contract.md": "97db9feb50c6e1155e98bb9b1761994fbc88d1051c2b5b8c2337525c74d19690",
+    "observations.json": "432ae97d3e406000e4d411de44085d7977a0fe25b11040557ad7a7e04f4490fd"
+  },
+  "blocking_reasons": [
+    "C1-C7 and their future executable checker need separate review.",
+    "No pinned execution runner or enforced permission profile has been reviewed.",
+    "Network/filesystem/process isolation, limits, termination and capture are untested.",
+    "Candidate patch/tree and exact execution commands are absent.",
+    "Human permission for real execution and candidate materialization is absent."
+  ],
+  "candidate_run": null,
+  "check_ids": [
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C5",
+    "C6",
+    "C7"
+  ],
+  "checks_status": "proposed_pending_independent_review",
+  "decision": "execution_blocked",
+  "decision_kind": "packet_author_assessment_not_independent_approval",
+  "execution_authorization": null,
+  "future_record_rule": "Append a new digest-bound decision; preserve this historical assessment. Documentation merge is not execution authorization.",
+  "independent_review_decision": null,
+  "independent_reviewer": null,
+  "isolation_status": "inert_fixture_boundary_inspected_live_containment_unvalidated",
+  "missing_bindings": {
+    "authorization_expires_at_utc": null,
+    "authorization_identity": null,
+    "baseline_argv": null,
+    "candidate_argv": null,
+    "candidate_patch_sha256": null,
+    "candidate_tree": null,
+    "enforced_permission_profile_sha256": null,
+    "executable_checker_sha256": null,
+    "host_runtime_version": null,
+    "launcher_sha256": null,
+    "live_capture_format_version": null,
+    "python_version": null,
+    "runtime_image_sha256": null,
+    "trusted_containment_canary_evidence_sha256": null
+  },
+  "plain_comparison_outcome_totals": null,
+  "prepared_by": "Codex",
+  "recorded_at_utc": "2026-10-23T04:00:51.316603+00:00",
+  "scope_exclusions": [
+    "MON-12",
+    "MON-13"
+  ],
+  "task": "Reject non-finite float results in workflow.decode, including exponent overflow.",
+  "task_baseline_run": null,
+  "task_outcome_totals": null,
+  "version": 1
+}
