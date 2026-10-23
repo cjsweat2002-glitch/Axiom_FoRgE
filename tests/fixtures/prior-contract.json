@@ -1,0 +1,9 @@
+{
+  "checks": [
+    "add(2, 3) == 5"
+  ],
+  "invariants": [
+    "Preserve positive integer addition."
+  ],
+  "version": "add-v0"
+}
