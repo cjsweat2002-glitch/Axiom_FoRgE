@@ -49,12 +49,8 @@ def nonempty(value: object) -> bool:
     return isinstance(value, str) and bool(value.strip())
 
 
-def validate(case: dict) -> None:
-    fields(case, {"version", "goal", "baseline", "contract", "policy",
-                  "acceptance", "candidates"}, "case")
-    require(type(case["version"]) is int and case["version"] == 1,
-            "unsupported case version")
-    require(nonempty(case["goal"]), "goal must be nonempty text")
+def validate_context(case: dict, *, allow_empty_checks: bool = False) -> None:
+    """Shared frozen context; an ambiguity input may expose absent checks."""
     fields(case["baseline"], {"version", "files"}, "baseline")
     files = case["baseline"]["files"]
     require(isinstance(files, dict) and bool(files) and
@@ -63,7 +59,8 @@ def validate(case: dict) -> None:
     fields(case["contract"], {"version", "invariants", "checks"}, "contract")
     for name in ("invariants", "checks"):
         values = case["contract"][name]
-        require(isinstance(values, list) and bool(values) and
+        require(isinstance(values, list) and
+                (bool(values) or (name == "checks" and allow_empty_checks)) and
                 all(nonempty(v) for v in values) and len(set(values)) == len(values),
                 f"contract {name} must be distinct nonempty strings")
     fields(case["policy"], {"version", "human_approval_required"}, "policy")
@@ -71,6 +68,15 @@ def validate(case: dict) -> None:
             "human approval must remain required")
     for name in ("baseline", "contract", "policy"):
         require(nonempty(case[name]["version"]), f"{name} version must be text")
+
+
+def validate(case: dict) -> None:
+    fields(case, {"version", "goal", "baseline", "contract", "policy",
+                  "acceptance", "candidates"}, "case")
+    require(type(case["version"]) is int and case["version"] == 1,
+            "unsupported case version")
+    require(nonempty(case["goal"]), "goal must be nonempty text")
+    validate_context(case)
     fields(case["acceptance"], {"reviewer", "checks_reviewed"}, "acceptance")
     require(nonempty(case["acceptance"]["reviewer"]), "reviewer must be named")
     require(type(case["acceptance"]["checks_reviewed"]) is bool,

@@ -1,0 +1,104 @@
+{
+  "version": 1,
+  "goal": "Document integer addition without changing behavior.",
+  "baseline": {
+    "files": {
+      "calculator.py": "def add(a, b):\n    return a + b\n"
+    },
+    "version": "python-add-v1"
+  },
+  "contract": {
+    "checks": [
+      "add(2, 3) == 5",
+      "add(-2, 3) == 1"
+    ],
+    "invariants": [
+      "Preserve integer addition, including negative operands."
+    ],
+    "version": "add-v1"
+  },
+  "policy": {
+    "human_approval_required": true,
+    "version": "review-v1"
+  },
+  "scope": {
+    "kind": "component",
+    "id": "calculator"
+  },
+  "requirements": [
+    {
+      "id": "addition",
+      "statement": "Preserve integer addition.",
+      "checks": [
+        "add(2, 3) == 5",
+        "add(-2, 3) == 1"
+      ],
+      "evidence_refs": [
+        "request"
+      ],
+      "interpretations": [
+        {
+          "id": "arithmetic",
+          "statement": "Coerce digit strings and add numbers.",
+          "expectations": {
+            "digit-pair": "5",
+            "zero-pair": "0"
+          }
+        },
+        {
+          "id": "concatenation",
+          "statement": "Concatenate digit strings.",
+          "expectations": {
+            "digit-pair": "23",
+            "zero-pair": "00"
+          }
+        },
+        {
+          "id": "reject",
+          "statement": "Reject non-integer operands.",
+          "expectations": {
+            "digit-pair": "TypeError"
+          }
+        }
+      ]
+    }
+  ],
+  "assumptions": [
+    {
+      "id": "numeric",
+      "key": "operand-type",
+      "value": "integer",
+      "evidence_refs": [
+        "request"
+      ]
+    }
+  ],
+  "probes": [
+    {
+      "id": "digit-pair",
+      "description": "Proposed only: compare add(\"2\", \"3\") against the declared outcomes."
+    },
+    {
+      "id": "zero-pair",
+      "description": "Proposed only: compare add(\"0\", \"0\") against the declared outcomes."
+    }
+  ],
+  "evidence": [
+    {
+      "id": "request",
+      "text": "Synthetic request: preserve addition for positive and negative integers.\n"
+    },
+    {
+      "id": "observations",
+      "text": "Synthetic observations: add(2, 3) = 5; add(-2, 3) = 1. No live execution or approval.\n"
+    }
+  ],
+  "acceptance_evidence": {
+    "add(2, 3) == 5": [
+      "observations"
+    ],
+    "add(-2, 3) == 1": [
+      "observations"
+    ]
+  }
+}
