@@ -149,6 +149,40 @@ changed, and duplicate files and newly linked README assets. These additional
 checks are implementation proposals pending separate review, not acceptance
 approval. No candidate evaluation policy, oracle, or approval boundary changes.
 
+Local verification on 2026-10-23 used clean clones of
+`419f31b0e6042c2a0b3f7864e0b1bfc66f6d4a80` on Linux x86_64, then unpacked each
+resulting sdist and ran the documented `--source-archive` path. This later
+documentation-only update records those results; it was not part of those runs.
+
+| Interpreter | Checkout source / installed tests | Unpacked sdist source / installed tests | Build, archive, install, smoke (both runs) |
+| --- | --- | --- | --- |
+| CPython 3.11.17 | 59 / 59 passed | 59 / 59 passed | passed |
+| CPython 3.14.9 | 59 / 59 passed | 59 / 59 passed | passed |
+| CPython 3.15.1 | 59 / 59 passed | 59 / 59 passed | passed |
+
+Each of the six runs built the wheel from its sdist, matched all 30 reproduction
+assets to source bytes, installed with `--no-index --no-deps`, passed `pip check`,
+and passed all eight installed CLI smoke commands with human approval pending.
+Build environments matched all six tooling pins. Installed environments used
+bundled pip 26.2.2 (and bundled setuptools 79.0.1 on 3.11). `actionlint` 1.7.7,
+`bash -n scripts/verify.sh`, and `git diff --check` also passed.
+
+Logs, distributions, and synthetic smoke evidence remain in these session-local
+directories, with `verification.log` and `archive-verification.log` recording the
+checkout and unpacked-archive runs respectively:
+
+- `/tmp/axiom-mon14-3.11.17-vg4m14/`
+- `/tmp/axiom-mon14-3.14.9-o2DOuA/`
+- `/tmp/axiom-mon14-3.15.1-hrWMv6/`
+
+The original 3.15.1 failure was reproduced at the baseline after 55 passing source
+tests; its log remains in `/tmp/axiom-mon14-baseline-ZWj965/verification.log`.
+Building the baseline sdist with the updated frontend isolated the manifest
+defect: all four reported assets were absent, and the new checker rejected the
+missing verification guide. That archive remains in
+`/tmp/axiom-mon14-old-sdist-SYSHxE/`. These local results do not establish
+GitHub-hosted CI success, other-platform compatibility, or independent approval.
+
 This is repeatable functional verification, not a bit-for-bit reproducible build
 claim. OS images, Python patch releases, package-index availability, and bundled
 installer versions can vary; tooling pins do not authenticate downloads. Other
