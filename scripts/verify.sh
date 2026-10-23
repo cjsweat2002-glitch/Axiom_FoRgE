@@ -1,17 +1,28 @@
 #!/usr/bin/env bash
-# Run from a clean checkout with the selected Python on PATH.
+# Run from a clean checkout or explicitly selected unpacked source archive.
 set -euo pipefail
 set -x
 
 source_root=$(cd "$(dirname "$0")/.." && pwd)
 cd "$source_root"
-git rev-parse HEAD
-git diff --exit-code
-git diff --cached --exit-code
-test -z "$(git ls-files --others --exclude-standard)"
+case "${2:-}" in
+    "")
+        git rev-parse HEAD
+        git diff --exit-code
+        git diff --cached --exit-code
+        test -z "$(git ls-files --others --exclude-standard)"
+        ;;
+    --source-archive)
+        test -f PKG-INFO
+        test ! -e .git
+        printf '%s\n' 'Verifying unpacked source archive; Git revision is unknown.'
+        ;;
+    *) printf 'Unknown verification mode: %s\n' "$2" >&2; exit 2 ;;
+esac
+test "$#" -le 2
 
 # Require a new directory: never overwrite a prior verification or evidence store.
-verification_root=${1:?Usage: bash scripts/verify.sh /absolute/new-output-directory}
+verification_root=${1:?Usage: bash scripts/verify.sh /absolute/new-output-directory [--source-archive]}
 [[ "$verification_root" = /* ]]
 mkdir "$verification_root"
 unset PYTHONPATH PYTHONHOME
@@ -27,6 +38,7 @@ build_python="$verification_root/build-env/bin/python"
 # All build dependencies are pinned above, so avoid another resolver environment.
 "$build_python" -m build --no-isolation --outdir "$verification_root/dist"
 sha256sum "$verification_root"/dist/*
+"$build_python" scripts/check_sdist.py "$verification_root"/dist/*.tar.gz
 
 python3 -m venv "$verification_root/installed-env"
 installed_python="$verification_root/installed-env/bin/python"
