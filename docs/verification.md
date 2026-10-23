@@ -71,8 +71,33 @@ checked. Consult the run linked to that revision before claiming CI success.
 
 ## Observed results and limits
 
-Local verification results will be recorded here after running the checks.
-GitHub-hosted CI has not been observed for this increment.
+Implementation-side checks on 2026-10-23 used fresh local clones at
+`b5fc3ce5afe886e11547733d6c385d548f9f3a8c` on Linux x86_64. The subsequent
+documentation-only commit records these results; it was not the tested revision.
+
+| Interpreter | Source regressions | Sdist → wheel / install / pip check | Installed smoke | Installed regressions |
+| --- | --- | --- | --- | --- |
+| CPython 3.11.17 | 24 passed | passed | 8 commands passed | 24 passed |
+| CPython 3.14.9 | 24 passed | passed | 8 commands passed | 24 passed |
+
+Both runs used the pinned build tooling. The installed environments used bundled
+pip 26.2.2 (and bundled setuptools 79.0.1 on 3.11). Each installed wheel had SHA-256
+`b5449d4f03a8a28698a43505fc15fde35239c4314093685bdb40e52e92da7bcc`.
+Local logs and outputs are retained under `/tmp/axiom-mon8-3.11-jX8I4q/` and
+`/tmp/axiom-mon8-3.14-Fz23ye/`; these are session-local evidence, not durable CI
+artifacts. `actionlint` 1.7.7, `bash -n scripts/verify.sh`, and `git diff --check`
+also passed. GitHub-hosted CI has not been observed for this increment.
+
+Two initial invocations accidentally selected Python 3.15.1 through a shell
+startup hook. Their source regressions passed, but build 1.3.0 failed in argument
+parsing (`HelpFormatter.__init__()` rejected `color`); install and smoke checks
+were not reached. Those logs remain under `/tmp/axiom-mon8-3.11-S11jHl/` and
+`/tmp/axiom-mon8-3.14-VJuPsn/` despite their intended-version directory labels.
+The successful invocations used `mise exec python@3.11` / `python@3.14` followed
+by `env -u BASH_ENV bash --noprofile --norc scripts/verify.sh OUTPUT` to preserve
+the selected interpreter. The pinned delivery toolchain is verified only on the
+matrix versions; Python 3.15 packaging remains a known gap, distinct from the
+CLI's declared runtime minimum.
 
 This is repeatable functional verification, not a bit-for-bit reproducible build
 claim. OS images, Python patch releases, package-index availability, and bundled
