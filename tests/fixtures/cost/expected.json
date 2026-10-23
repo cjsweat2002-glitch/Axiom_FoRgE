@@ -1,0 +1,27 @@
+{
+  "notice": "SIMULATED manually curated arithmetic, not measured savings",
+  "plain": {
+    "total": "14",
+    "accepted": 1,
+    "refused": 1,
+    "unknown": 0,
+    "attempts": 3,
+    "retries": 1,
+    "failures": 2,
+    "false_acceptances": 1,
+    "latency": "40",
+    "cost_per_accepted": "14"
+  },
+  "cheap": {
+    "total": "8.0",
+    "accepted": 2,
+    "refused": 0,
+    "unknown": 0,
+    "attempts": 3,
+    "retries": 1,
+    "failures": 1,
+    "false_acceptances": 0,
+    "latency": "20",
+    "cost_per_accepted": "4.0"
+  }
+}
