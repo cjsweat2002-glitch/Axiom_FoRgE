@@ -57,7 +57,7 @@ An optional install with `python3 -m pip install .` exposes the same commands as
 
 ## Reproducible delivery
 
-The delivery workflow checks Python 3.11 (the declared minimum) and 3.14 on Linux:
+The delivery workflow checks Python 3.11 (the declared minimum), 3.14, and 3.15 on Linux:
 the full regression suite, source distribution and wheel build, installation into
 a fresh environment, and installed `axiom-forge` smoke checks outside the checkout.
 The regression suite also runs against the installed package, retaining the
@@ -65,6 +65,9 @@ historical-corruption and terminal-injection cases. See
 [`docs/verification.md`](docs/verification.md) for reproduction commands, observed
 results, limitations, and the next expansion gate. A configured CI job is not
 evidence that it ran or passed.
+Source archives include the verification documentation, pinned tooling requirements,
+scripts, and regression inputs; the workflow checks their contents against source.
+The verification guide also documents running the checks from an unpacked archive.
 
 ## Recorded cost/quality comparison
 

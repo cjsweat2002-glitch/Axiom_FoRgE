@@ -8,19 +8,24 @@ reproducible-delivery stage. It adds no execution adapter or acceptance authorit
 ## Checks and invariants
 
 `pyproject.toml` declares `requires-python = ">=3.11"` and no runtime dependencies.
-The CI matrix covers that minimum and Python 3.14, a current supported release,
+The CI matrix covers that minimum, Python 3.14, and Python 3.15,
 on Ubuntu 24.04. Keep the matrix minimum aligned with metadata when support changes.
 Patch releases float; each run prints the actual interpreter and operating system.
 
-`scripts/verify.sh` requires a clean tracked checkout and a new, absolute output
-directory. It fails on any unsuccessful step and prints commands, the exact Git
-revision, interpreter, installed tooling versions, and distribution SHA-256 hashes.
+`scripts/verify.sh` requires a clean tracked checkout (or an explicitly selected
+unpacked source archive) and a new, absolute output directory. It fails on any
+unsuccessful step and prints commands, the Git revision when available, interpreter,
+installed tooling versions, and distribution SHA-256 hashes.
 It performs the following proposed acceptance checks:
 
 1. Run the full existing regression suite from source, including historical
    corruption, append refusal without mutation, and terminal-injection cases.
 2. Build an sdist and then a wheel **from the sdist**, with the delivery tooling
-   pinned in `requirements-verification.txt`. No runtime dependency is added.
+   pinned in `requirements-verification.txt`. Check the built archive for the
+   verification documentation, requirements, all verification scripts, regression
+   suite/fixtures, and local inline Markdown links in the README and verification
+   guide. Require each asset to occur once as a regular file with exact source
+   bytes. No runtime dependency is added.
 3. Install that wheel without dependency resolution or index access in a second
    fresh virtual environment, then run `pip check`.
 4. From a directory outside the checkout, verify the installed package location
@@ -48,7 +53,7 @@ the exact commit SHA:
 git clone https://github.com/cjsweat2002-glitch/Axiom_FoRgE.git axiom-verification
 cd axiom-verification
 git checkout --detach REVISION
-# Put Python 3.11 or 3.14 on PATH as python3; repeat in a fresh checkout for each.
+# Put Python 3.11, 3.14, or 3.15 on PATH as python3; repeat for each.
 python3 --version
 verification_parent=$(mktemp -d)
 set -o pipefail
@@ -62,6 +67,32 @@ and each smoke command's stdout/stderr. The log captures command exits through
 the fail-fast shell, regression results, environment, revision, and artifact
 hashes. Keep it together with the output directory. A failed early step leaves
 later checks unperformed, not successful.
+
+### From a source archive
+
+The sdist includes this guide, `requirements-verification.txt`, both original
+verification scripts, the archive checker, and the tests and fixtures. For a
+trusted project archive, record its hash, unpack it into a fresh directory, and
+run the same verification path with explicit archive mode:
+
+```sh
+sha256sum /absolute/path/axiom_forge-0.1.0.tar.gz
+archive_parent=$(mktemp -d)
+tar -xzf /absolute/path/axiom_forge-0.1.0.tar.gz -C "$archive_parent"
+cd "$archive_parent/axiom_forge-0.1.0"
+verification_parent=$(mktemp -d)
+set -o pipefail
+bash scripts/verify.sh "$verification_parent/results" --source-archive 2>&1 | tee "$verification_parent/verification.log"
+```
+
+Archive mode requires `PKG-INFO` and no `.git` entry; it explicitly reports the
+Git revision as unknown rather than borrowing a parent repository's revision.
+It performs the same source tests, sdist-to-wheel build, archive-content check,
+offline wheel installation (`--no-index --no-deps`), installed smoke commands,
+and installed regressions. Tool installation still requires index access.
+Preserve the original archive and hash with the log; archive mode does not
+authenticate origin or establish a clean Git checkout. The normal checkout mode
+continues to require clean tracked and untracked state.
 
 GitHub Actions runs the same script for pull requests, pushes to main, and manual
 runs, with read-only repository permissions. It retains logs, distributions, and
@@ -95,9 +126,28 @@ were not reached. Those logs remain under `/tmp/axiom-mon8-3.11-S11jHl/` and
 `/tmp/axiom-mon8-3.14-VJuPsn/` despite their intended-version directory labels.
 The successful invocations used `mise exec python@3.11` / `python@3.14` followed
 by `env -u BASH_ENV bash --noprofile --norc scripts/verify.sh OUTPUT` to preserve
-the selected interpreter. The pinned delivery toolchain is verified only on the
-matrix versions; Python 3.15 packaging remains a known gap, distinct from the
-CLI's declared runtime minimum.
+the selected interpreter. At that revision the pinned delivery toolchain was
+verified only on the original matrix versions; Python 3.15 packaging was a known
+gap, distinct from the CLI's declared runtime minimum. The historical results and
+failed attempts above remain unchanged by the follow-up below.
+
+### Verification tooling and archive follow-up
+
+This follow-up starts from merged main
+`42430020a425aeece7529d51e9fb4a257e5f4231`. Its scope is the Python 3.15 build-tool
+failure and missing source-archive reproduction assets. `build==1.3.0` retained
+a Python 3.14 beta workaround that passed `color=True` to `HelpFormatter` on all
+Python versions >=3.14; Python 3.15.1 rejects that argument. The frontend is now
+pinned to `build==1.6.1`, which removes that workaround and declares Python
+3.11/3.14/3.15 support. Other delivery pins, the runtime dependency set, dependency
+checks, and offline wheel-install flags are unchanged. The full build in the
+three-version CI matrix is the frontend compatibility regression check.
+
+The manifest now explicitly includes reproduction assets. The archive checker
+compares the actual built sdist with source; its regressions exercise missing,
+changed, and duplicate files and newly linked README assets. These additional
+checks are implementation proposals pending separate review, not acceptance
+approval. No candidate evaluation policy, oracle, or approval boundary changes.
 
 This is repeatable functional verification, not a bit-for-bit reproducible build
 claim. OS images, Python patch releases, package-index availability, and bundled

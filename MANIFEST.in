@@ -1,3 +1,9 @@
 include AGENTS.md
 recursive-include tests/fixtures *.json *.md
+recursive-include tests *.py
 include docs/cost-evaluation.md
+include docs/verification.md
+include requirements-verification.txt
+include scripts/verify.sh
+include scripts/smoke_installed.py
+include scripts/check_sdist.py
