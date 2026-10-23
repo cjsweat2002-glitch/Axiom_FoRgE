@@ -69,6 +69,12 @@ Source archives include the verification documentation, pinned tooling requireme
 scripts, and regression inputs; the workflow checks their contents against source.
 The verification guide also documents running the checks from an unpacked archive.
 
+The [bounded execution review packet](docs/execution/mon-11/contract.md) freezes
+one proposed repository task, checks, permissions, limits, and inspection evidence.
+Live containment is unvalidated and execution remains blocked pending independent
+review and explicit human authorization. The packet runs no task baseline or
+candidate and introduces no execution adapter.
+
 ## Recorded cost/quality comparison
 
 `python3 -m axiom_forge cost-evaluate tests/fixtures/cost/matched.json` compares
