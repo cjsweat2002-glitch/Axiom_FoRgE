@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "goal": "Document integer addition without changing behavior.",
+  "baseline": {
+    "files": {
+      "calculator.py": "def add(a, b):\n    return a + b\n"
+    },
+    "version": "python-add-v1"
+  },
+  "contract": {
+    "checks": [
+      "add(2, 3) == 5",
+      "add(-2, 3) == 1"
+    ],
+    "invariants": [
+      "Preserve integer addition, including negative operands."
+    ],
+    "version": "add-v1"
+  },
+  "policy": {
+    "human_approval_required": true,
+    "version": "review-v1"
+  },
+  "scope": {
+    "kind": "project",
+    "id": "calculator"
+  },
+  "requirements": [
+    {
+      "id": "addition",
+      "statement": "Preserve integer addition.",
+      "checks": [],
+      "evidence_refs": [],
+      "interpretations": []
+    }
+  ],
+  "assumptions": [
+    {
+      "id": "numeric",
+      "key": "operand-type",
+      "value": "integer",
+      "evidence_refs": []
+    }
+  ],
+  "probes": [],
+  "evidence": [
+    {
+      "id": "request",
+      "text": "Synthetic request: preserve addition for positive and negative integers.\n"
+    },
+    {
+      "id": "observations",
+      "text": "Synthetic observations: add(2, 3) = 5; add(-2, 3) = 1. No live execution or approval.\n"
+    }
+  ],
+  "acceptance_evidence": {}
+}

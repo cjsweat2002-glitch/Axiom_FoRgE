@@ -6,6 +6,8 @@ from pathlib import Path
 import sys
 
 from . import __version__
+from . import ambiguity
+from .project import evaluate_project
 from .store import EvidenceStore
 from .workflow import canonical, decode, evaluate
 
@@ -24,6 +26,13 @@ def main(argv: list[str] | None = None) -> int:
     run = commands.add_parser("run", help="record a deterministic fixture comparison")
     run.add_argument("case", type=Path)
     run.add_argument("--store", type=Path, default=Path(".axiom-forge"))
+    ambiguity_command = commands.add_parser("ambiguity", help="inspect or explicitly record bounded structural findings")
+    ambiguity_command.add_argument("case", type=Path)
+    ambiguity_command.add_argument("--record", action="store_true", help="append the result and exact evidence")
+    ambiguity_command.add_argument("--store", type=Path, default=Path(".axiom-forge"))
+    project = commands.add_parser("project-evaluate", help="review recorded results for an exact requirements input")
+    project.add_argument("case", type=Path)
+    project.add_argument("--store", type=Path, default=Path(".axiom-forge"))
     for name in ("replay", "report"):
         command = commands.add_parser(name, help=f"{name} a recorded event after verifying its evidence")
         command.add_argument("event", type=int)
@@ -37,8 +46,18 @@ def main(argv: list[str] | None = None) -> int:
                       "policy": case["policy"], "comparison": report}
         elif args.command == "run":
             output = EvidenceStore(args.store).record(args.case.read_bytes())
+        elif args.command == "ambiguity":
+            raw = args.case.read_bytes()
+            output = (EvidenceStore(args.store).record(raw, engine=ambiguity.ENGINE)
+                      if args.record else ambiguity.analyze(raw))
+        elif args.command == "project-evaluate":
+            output = evaluate_project(args.case.read_bytes(), EvidenceStore(args.store))
         else:
             report = EvidenceStore(args.store).replay(args.event)
+            if report["engine"] == ambiguity.ENGINE:
+                # Canonical JSON is reviewable and safely escapes all supplied text.
+                print(canonical(report).decode("utf-8"), end="")
+                return 0
             if args.command == "report":
                 print(f"Axiom_FoRgE — event {args.event}\n")
                 print(f"Goal: {terminal_label(report['goal'])}\n")
