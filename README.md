@@ -55,6 +55,17 @@ the values returned by parsing JSON output remain intact.
 An optional install with `python3 -m pip install .` exposes the same commands as
 `axiom-forge`. Packaging uses setuptools; there are no runtime dependencies.
 
+## Reproducible delivery
+
+The delivery workflow checks Python 3.11 (the declared minimum) and 3.14 on Linux:
+the full regression suite, source distribution and wheel build, installation into
+a fresh environment, and installed `axiom-forge` smoke checks outside the checkout.
+The regression suite also runs against the installed package, retaining the
+historical-corruption and terminal-injection cases. See
+[`docs/verification.md`](docs/verification.md) for reproduction commands, observed
+results, limitations, and the next expansion gate. A configured CI job is not
+evidence that it ran or passed.
+
 ## Recorded cost/quality comparison
 
 `python3 -m axiom_forge cost-evaluate tests/fixtures/cost/matched.json` compares

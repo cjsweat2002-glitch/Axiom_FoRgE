@@ -1,0 +1,44 @@
+name: Verify delivery
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Python ${{ matrix.python-version }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        # Keep the lower bound aligned with pyproject.toml's requires-python.
+        python-version: ['3.11', '3.14']
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Test, build, install, and smoke check
+        shell: bash
+        run: |
+          set -o pipefail
+          bash scripts/verify.sh "$RUNNER_TEMP/verification" 2>&1 | tee "$RUNNER_TEMP/verification.log"
+      - name: Retain verification outputs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: verification-python-${{ matrix.python-version }}
+          retention-days: 14
+          if-no-files-found: error
+          path: |
+            ${{ runner.temp }}/verification.log
+            ${{ runner.temp }}/verification/dist/
+            ${{ runner.temp }}/verification/working/
