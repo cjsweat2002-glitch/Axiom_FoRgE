@@ -3,14 +3,25 @@
 import os
 from pathlib import Path
 
-from . import ambiguity
+from . import ambiguity, cost
 from .workflow import ENGINE, canonical, decode, evaluate, fields, fingerprint, require
 
 
 def prepare(raw: bytes, engine: str) -> dict[str, bytes]:
     """Versioned deterministic artifacts; fixture-v1 output stays unchanged."""
-    require(engine in (ENGINE, ambiguity.ENGINE), "unsupported event engine")
-    if engine == ambiguity.ENGINE:
+    require(engine in (ENGINE, ambiguity.ENGINE, cost.ENGINE), "unsupported event engine")
+    if engine == cost.ENGINE:
+        report = cost.analyze(raw)
+        case = decode(raw)
+        extra = {f"evidence:{item['id']}": item["text"].encode("utf-8")
+                 for item in case["evidence"]}
+        extra["acceptance"] = canonical(case["acceptance"])
+        extra.update({f"candidate:{s}:{r}:{a}": attempt["artifact"].encode("utf-8")
+                      for s, strategy in enumerate(case["strategies"])
+                      for r, run in enumerate(strategy["runs"])
+                      for a, attempt in enumerate(run["attempts"])
+                      if attempt["artifact"] is not None})
+    elif engine == ambiguity.ENGINE:
         report = ambiguity.analyze(raw)
         case = decode(raw)
         extra = {f"evidence:{item['id']}": item["text"].encode("utf-8")
@@ -61,7 +72,7 @@ class EvidenceStore:
             require(type(event["sequence"]) is int and event["sequence"] == sequence
                     and event["previous"] == previous,
                     "event lineage mismatch")
-            require(event["engine"] in (ENGINE, ambiguity.ENGINE), "unsupported event engine")
+            require(event["engine"] in (ENGINE, ambiguity.ENGINE, cost.ENGINE), "unsupported event engine")
             # Every retained event must be coherent before append or replay.
             self._validate_artifacts(event["artifacts"], event["engine"])
             previous = fingerprint(data)

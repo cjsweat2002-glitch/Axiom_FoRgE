@@ -1,0 +1,514 @@
+{
+  "acceptance": [
+    {
+      "attempt_id": "a1",
+      "candidate_sha256": "e1a894022d1a082987b87adecb623438c9e386d86b2b621cff4a5fe7fdf7edc8",
+      "checks": {
+        "add(-2, 3) == 1": false,
+        "add(2, 3) == 5": false
+      },
+      "context": {
+        "baseline": "c8b56b070aafd3574b9b278d21416f122193a2ca421343a0bbffb01916551584",
+        "contract": "cc7c26e8dc8d2b511d69c6552a4aed4f9dad13ef06e3e9d605ca8a5d6267f862",
+        "policy": "151e08cfd0a6366f96dab34dc8db7ad4d51b369ced312c128547aa12d60007b5",
+        "task": "17f4e747a1e3ca249ded70f1a37b07d11678ac0b92b922e4cdb0946d7a86b284"
+      },
+      "decision": "refused",
+      "evidence_ref": "review",
+      "reviewer": "synthetic-external-reviewer",
+      "strategy_id": "plain",
+      "task_id": "positive"
+    },
+    {
+      "attempt_id": "a2",
+      "candidate_sha256": "ba1a531f581d2e6094e978ed6f7aca7a8d92eeb62c6e7ad73ee692f7f18bc772",
+      "checks": {
+        "add(-2, 3) == 1": true,
+        "add(2, 3) == 5": true
+      },
+      "context": {
+        "baseline": "c8b56b070aafd3574b9b278d21416f122193a2ca421343a0bbffb01916551584",
+        "contract": "cc7c26e8dc8d2b511d69c6552a4aed4f9dad13ef06e3e9d605ca8a5d6267f862",
+        "policy": "151e08cfd0a6366f96dab34dc8db7ad4d51b369ced312c128547aa12d60007b5",
+        "task": "17f4e747a1e3ca249ded70f1a37b07d11678ac0b92b922e4cdb0946d7a86b284"
+      },
+      "decision": "accepted",
+      "evidence_ref": "review",
+      "reviewer": "synthetic-external-reviewer",
+      "strategy_id": "plain",
+      "task_id": "positive"
+    },
+    {
+      "attempt_id": "a1",
+      "candidate_sha256": "e1a894022d1a082987b87adecb623438c9e386d86b2b621cff4a5fe7fdf7edc8",
+      "checks": {
+        "add(-2, 3) == 1": false,
+        "add(2, 3) == 5": false
+      },
+      "context": {
+        "baseline": "c8b56b070aafd3574b9b278d21416f122193a2ca421343a0bbffb01916551584",
+        "contract": "cc7c26e8dc8d2b511d69c6552a4aed4f9dad13ef06e3e9d605ca8a5d6267f862",
+        "policy": "151e08cfd0a6366f96dab34dc8db7ad4d51b369ced312c128547aa12d60007b5",
+        "task": "e799cd1f704336620268b0d5c7fc668c32421e1e76505279b154da83ef1da1a3"
+      },
+      "decision": "refused",
+      "evidence_ref": "review",
+      "reviewer": "synthetic-external-reviewer",
+      "strategy_id": "plain",
+      "task_id": "negative"
+    },
+    {
+      "attempt_id": "a1",
+      "candidate_sha256": "ba1a531f581d2e6094e978ed6f7aca7a8d92eeb62c6e7ad73ee692f7f18bc772",
+      "checks": {
+        "add(-2, 3) == 1": true,
+        "add(2, 3) == 5": true
+      },
+      "context": {
+        "baseline": "c8b56b070aafd3574b9b278d21416f122193a2ca421343a0bbffb01916551584",
+        "contract": "cc7c26e8dc8d2b511d69c6552a4aed4f9dad13ef06e3e9d605ca8a5d6267f862",
+        "policy": "151e08cfd0a6366f96dab34dc8db7ad4d51b369ced312c128547aa12d60007b5",
+        "task": "17f4e747a1e3ca249ded70f1a37b07d11678ac0b92b922e4cdb0946d7a86b284"
+      },
+      "decision": "accepted",
+      "evidence_ref": "review",
+      "reviewer": "synthetic-external-reviewer",
+      "strategy_id": "cheap",
+      "task_id": "positive"
+    },
+    {
+      "attempt_id": "a1",
+      "candidate_sha256": "e1a894022d1a082987b87adecb623438c9e386d86b2b621cff4a5fe7fdf7edc8",
+      "checks": {
+        "add(-2, 3) == 1": false,
+        "add(2, 3) == 5": false
+      },
+      "context": {
+        "baseline": "c8b56b070aafd3574b9b278d21416f122193a2ca421343a0bbffb01916551584",
+        "contract": "cc7c26e8dc8d2b511d69c6552a4aed4f9dad13ef06e3e9d605ca8a5d6267f862",
+        "policy": "151e08cfd0a6366f96dab34dc8db7ad4d51b369ced312c128547aa12d60007b5",
+        "task": "e799cd1f704336620268b0d5c7fc668c32421e1e76505279b154da83ef1da1a3"
+      },
+      "decision": "refused",
+      "evidence_ref": "review",
+      "reviewer": "synthetic-external-reviewer",
+      "strategy_id": "cheap",
+      "task_id": "negative"
+    },
+    {
+      "attempt_id": "a2",
+      "candidate_sha256": "ba1a531f581d2e6094e978ed6f7aca7a8d92eeb62c6e7ad73ee692f7f18bc772",
+      "checks": {
+        "add(-2, 3) == 1": true,
+        "add(2, 3) == 5": true
+      },
+      "context": {
+        "baseline": "c8b56b070aafd3574b9b278d21416f122193a2ca421343a0bbffb01916551584",
+        "contract": "cc7c26e8dc8d2b511d69c6552a4aed4f9dad13ef06e3e9d605ca8a5d6267f862",
+        "policy": "151e08cfd0a6366f96dab34dc8db7ad4d51b369ced312c128547aa12d60007b5",
+        "task": "e799cd1f704336620268b0d5c7fc668c32421e1e76505279b154da83ef1da1a3"
+      },
+      "decision": "accepted",
+      "evidence_ref": "review",
+      "reviewer": "synthetic-external-reviewer",
+      "strategy_id": "cheap",
+      "task_id": "negative"
+    }
+  ],
+  "assumptions": "SIMULATED USD amounts, not prices or observed spending. Each attempt includes allocated model, compute, review and storage totals; no external overhead. Durations are synthetic sequential seconds. All attempts are declared present.",
+  "baseline": {
+    "files": {
+      "calculator.py": "def add(a, b):\n    return a + b\n"
+    },
+    "version": "python-add-v1"
+  },
+  "contract": {
+    "checks": [
+      "add(2, 3) == 5",
+      "add(-2, 3) == 1"
+    ],
+    "invariants": [
+      "Preserve integer addition, including negative operands."
+    ],
+    "version": "add-v1"
+  },
+  "data_kind": "simulated",
+  "evidence": [
+    {
+      "id": "ledger",
+      "source": "synthetic fixture ledger v1",
+      "text": "SIMULATED: all attempts, amounts and sequential durations below are invented arithmetic examples; zero storage is explicitly allocated."
+    },
+    {
+      "id": "review",
+      "source": "synthetic external reviewer v1",
+      "text": "SIMULATED independent check outcomes, not actual review or human approval."
+    }
+  ],
+  "goal": "SIMULATED: compare costs for two bounded Python addition tasks",
+  "policy": {
+    "human_approval_required": true,
+    "version": "review-v1"
+  },
+  "strategies": [
+    {
+      "description": "SIMULATED fixed task roster: plain repeated generate-and-test",
+      "id": "plain",
+      "kind": "plain",
+      "runs": [
+        {
+          "attempts": [
+            {
+              "artifact": "def add(a, b):\n    return a - b\n",
+              "claim": "refused",
+              "costs": {
+                "compute": {
+                  "amount": "1",
+                  "complete": true,
+                  "currency": "USD",
+                  "evidence_ref": "ledger",
+                  "quantity": "1",
+                  "unit": "allocated attempt"
+                },
+                "model": {
+                  "amount": "2",
+                  "complete": true,
+                  "currency": "USD",
+                  "evidence_ref": "ledger",
+                  "quantity": "1",
+                  "unit": "allocated attempt"
+                },
+                "review": {
+                  "amount": "1",
+                  "complete": true,
+                  "currency": "USD",
+                  "evidence_ref": "ledger",
+                  "quantity": "1",
+                  "unit": "allocated attempt"
+                },
+                "storage": {
+                  "amount": "0",
+                  "complete": true,
+                  "currency": "USD",
+                  "evidence_ref": "ledger",
+                  "quantity": "1",
+                  "unit": "allocated attempt"
+                }
+              },
+              "execution": "failed",
+              "failure": "SIMULATED assertion failure",
+              "generator": "synthetic-generator",
+              "id": "a1",
+              "input": "SIMULATED prompt: Implement add(2, 3) == 5 under the frozen checks. Configuration: fixture-only, no model invoked.",
+              "latency": {
+                "evidence_ref": "ledger",
+                "seconds": "10"
+              }
+            },
+            {
+              "artifact": "def add(a, b):\n    return a + b\n",
+              "claim": "accepted",
+              "costs": {
+                "compute": {
+                  "amount": "1",
+                  "complete": true,
+                  "currency": "USD",
+                  "evidence_ref": "ledger",
+                  "quantity": "1",
+                  "unit": "allocated attempt"
+                },
+                "model": {
+                  "amount": "3",
+                  "complete": true,
+                  "currency": "USD",
+                  "evidence_ref": "ledger",
+                  "quantity": "1",
+                  "unit": "allocated attempt"
+                },
+                "review": {
+                  "amount": "2",
+                  "complete": true,
+                  "currency": "USD",
+                  "evidence_ref": "ledger",
+                  "quantity": "1",
+                  "unit": "allocated attempt"
+                },
+                "storage": {
+                  "amount": "0",
+                  "complete": true,
+                  "currency": "USD",
+                  "evidence_ref": "ledger",
+                  "quantity": "1",
+                  "unit": "allocated attempt"
+                }
+              },
+              "execution": "succeeded",
+              "failure": null,
+              "generator": "synthetic-generator",
+              "id": "a2",
+              "input": "SIMULATED prompt: Implement add(2, 3) == 5 under the frozen checks. Configuration: fixture-only, no model invoked.",
+              "latency": {
+                "evidence_ref": "ledger",
+                "seconds": "20"
+              }
+            }
+          ],
+          "attempts_complete": true,
+          "context": {
+            "baseline": "c8b56b070aafd3574b9b278d21416f122193a2ca421343a0bbffb01916551584",
+            "contract": "cc7c26e8dc8d2b511d69c6552a4aed4f9dad13ef06e3e9d605ca8a5d6267f862",
+            "policy": "151e08cfd0a6366f96dab34dc8db7ad4d51b369ced312c128547aa12d60007b5",
+            "task": "17f4e747a1e3ca249ded70f1a37b07d11678ac0b92b922e4cdb0946d7a86b284"
+          },
+          "final_attempt": "a2",
+          "task_id": "positive"
+        },
+        {
+          "attempts": [
+            {
+              "artifact": "def add(a, b):\n    return a - b\n",
+              "claim": "accepted",
+              "costs": {
+                "compute": {
+                  "amount": "1",
+                  "complete": true,
+                  "currency": "USD",
+                  "evidence_ref": "ledger",
+                  "quantity": "1",
+                  "unit": "allocated attempt"
+                },
+                "model": {
+                  "amount": "2",
+                  "complete": true,
+                  "currency": "USD",
+                  "evidence_ref": "ledger",
+                  "quantity": "1",
+                  "unit": "allocated attempt"
+                },
+                "review": {
+                  "amount": "1",
+                  "complete": true,
+                  "currency": "USD",
+                  "evidence_ref": "ledger",
+                  "quantity": "1",
+                  "unit": "allocated attempt"
+                },
+                "storage": {
+                  "amount": "0",
+                  "complete": true,
+                  "currency": "USD",
+                  "evidence_ref": "ledger",
+                  "quantity": "1",
+                  "unit": "allocated attempt"
+                }
+              },
+              "execution": "failed",
+              "failure": "SIMULATED assertion failure",
+              "generator": "synthetic-generator",
+              "id": "a1",
+              "input": "SIMULATED prompt: Implement add(-2, 1) == -1 under the frozen checks. Configuration: fixture-only, no model invoked.",
+              "latency": {
+                "evidence_ref": "ledger",
+                "seconds": "10"
+              }
+            }
+          ],
+          "attempts_complete": true,
+          "context": {
+            "baseline": "c8b56b070aafd3574b9b278d21416f122193a2ca421343a0bbffb01916551584",
+            "contract": "cc7c26e8dc8d2b511d69c6552a4aed4f9dad13ef06e3e9d605ca8a5d6267f862",
+            "policy": "151e08cfd0a6366f96dab34dc8db7ad4d51b369ced312c128547aa12d60007b5",
+            "task": "e799cd1f704336620268b0d5c7fc668c32421e1e76505279b154da83ef1da1a3"
+          },
+          "final_attempt": "a1",
+          "task_id": "negative"
+        }
+      ]
+    },
+    {
+      "description": "SIMULATED fixed task roster: cheap first; one escalation after failed checks",
+      "id": "cheap",
+      "kind": "cheap_first",
+      "runs": [
+        {
+          "attempts": [
+            {
+              "artifact": "def add(a, b):\n    return a + b\n",
+              "claim": "accepted",
+              "costs": {
+                "compute": {
+                  "amount": "0.5",
+                  "complete": true,
+                  "currency": "USD",
+                  "evidence_ref": "ledger",
+                  "quantity": "1",
+                  "unit": "allocated attempt"
+                },
+                "model": {
+                  "amount": "1",
+                  "complete": true,
+                  "currency": "USD",
+                  "evidence_ref": "ledger",
+                  "quantity": "1",
+                  "unit": "allocated attempt"
+                },
+                "review": {
+                  "amount": "0.5",
+                  "complete": true,
+                  "currency": "USD",
+                  "evidence_ref": "ledger",
+                  "quantity": "1",
+                  "unit": "allocated attempt"
+                },
+                "storage": {
+                  "amount": "0",
+                  "complete": true,
+                  "currency": "USD",
+                  "evidence_ref": "ledger",
+                  "quantity": "1",
+                  "unit": "allocated attempt"
+                }
+              },
+              "execution": "succeeded",
+              "failure": null,
+              "generator": "synthetic-generator",
+              "id": "a1",
+              "input": "SIMULATED prompt: Implement add(2, 3) == 5 under the frozen checks. Configuration: fixture-only, no model invoked.",
+              "latency": {
+                "evidence_ref": "ledger",
+                "seconds": "5"
+              }
+            }
+          ],
+          "attempts_complete": true,
+          "context": {
+            "baseline": "c8b56b070aafd3574b9b278d21416f122193a2ca421343a0bbffb01916551584",
+            "contract": "cc7c26e8dc8d2b511d69c6552a4aed4f9dad13ef06e3e9d605ca8a5d6267f862",
+            "policy": "151e08cfd0a6366f96dab34dc8db7ad4d51b369ced312c128547aa12d60007b5",
+            "task": "17f4e747a1e3ca249ded70f1a37b07d11678ac0b92b922e4cdb0946d7a86b284"
+          },
+          "final_attempt": "a1",
+          "task_id": "positive"
+        },
+        {
+          "attempts": [
+            {
+              "artifact": "def add(a, b):\n    return a - b\n",
+              "claim": "refused",
+              "costs": {
+                "compute": {
+                  "amount": "0.5",
+                  "complete": true,
+                  "currency": "USD",
+                  "evidence_ref": "ledger",
+                  "quantity": "1",
+                  "unit": "allocated attempt"
+                },
+                "model": {
+                  "amount": "1",
+                  "complete": true,
+                  "currency": "USD",
+                  "evidence_ref": "ledger",
+                  "quantity": "1",
+                  "unit": "allocated attempt"
+                },
+                "review": {
+                  "amount": "0.5",
+                  "complete": true,
+                  "currency": "USD",
+                  "evidence_ref": "ledger",
+                  "quantity": "1",
+                  "unit": "allocated attempt"
+                },
+                "storage": {
+                  "amount": "0",
+                  "complete": true,
+                  "currency": "USD",
+                  "evidence_ref": "ledger",
+                  "quantity": "1",
+                  "unit": "allocated attempt"
+                }
+              },
+              "execution": "failed",
+              "failure": "SIMULATED assertion failure",
+              "generator": "synthetic-generator",
+              "id": "a1",
+              "input": "SIMULATED prompt: Implement add(-2, 1) == -1 under the frozen checks. Configuration: fixture-only, no model invoked.",
+              "latency": {
+                "evidence_ref": "ledger",
+                "seconds": "5"
+              }
+            },
+            {
+              "artifact": "def add(a, b):\n    return a + b\n",
+              "claim": "accepted",
+              "costs": {
+                "compute": {
+                  "amount": "1",
+                  "complete": true,
+                  "currency": "USD",
+                  "evidence_ref": "ledger",
+                  "quantity": "1",
+                  "unit": "allocated attempt"
+                },
+                "model": {
+                  "amount": "2",
+                  "complete": true,
+                  "currency": "USD",
+                  "evidence_ref": "ledger",
+                  "quantity": "1",
+                  "unit": "allocated attempt"
+                },
+                "review": {
+                  "amount": "1",
+                  "complete": true,
+                  "currency": "USD",
+                  "evidence_ref": "ledger",
+                  "quantity": "1",
+                  "unit": "allocated attempt"
+                },
+                "storage": {
+                  "amount": "0",
+                  "complete": true,
+                  "currency": "USD",
+                  "evidence_ref": "ledger",
+                  "quantity": "1",
+                  "unit": "allocated attempt"
+                }
+              },
+              "execution": "succeeded",
+              "failure": null,
+              "generator": "synthetic-generator",
+              "id": "a2",
+              "input": "SIMULATED prompt: Implement add(-2, 1) == -1 under the frozen checks. Configuration: fixture-only, no model invoked.",
+              "latency": {
+                "evidence_ref": "ledger",
+                "seconds": "10"
+              }
+            }
+          ],
+          "attempts_complete": true,
+          "context": {
+            "baseline": "c8b56b070aafd3574b9b278d21416f122193a2ca421343a0bbffb01916551584",
+            "contract": "cc7c26e8dc8d2b511d69c6552a4aed4f9dad13ef06e3e9d605ca8a5d6267f862",
+            "policy": "151e08cfd0a6366f96dab34dc8db7ad4d51b369ced312c128547aa12d60007b5",
+            "task": "e799cd1f704336620268b0d5c7fc668c32421e1e76505279b154da83ef1da1a3"
+          },
+          "final_attempt": "a2",
+          "task_id": "negative"
+        }
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "id": "positive",
+      "input": "Implement add(2, 3) == 5 under the frozen checks."
+    },
+    {
+      "id": "negative",
+      "input": "Implement add(-2, 1) == -1 under the frozen checks."
+    }
+  ],
+  "version": 1
+}

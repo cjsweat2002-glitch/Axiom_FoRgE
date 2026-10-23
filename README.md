@@ -55,6 +55,21 @@ the values returned by parsing JSON output remain intact.
 An optional install with `python3 -m pip install .` exposes the same commands as
 `axiom-forge`. Packaging uses setuptools; there are no runtime dependencies.
 
+## Recorded cost/quality comparison
+
+`python3 -m axiom_forge cost-evaluate tests/fixtures/cost/matched.json` compares
+explicitly supplied plain and cheap-first task records. **The bundled data is
+simulated; it demonstrates arithmetic, not measured savings or actual independent
+review.** All attempts and retries contribute to costs. Missing/partial costs,
+unknown acceptance, zero acceptances, or incomparable runs suppress cost-per-result
+ratios. Separate external acceptance records bind exact candidates and context;
+candidate claims cannot grant acceptance or approval.
+
+Use `--record --store /path/to/evidence` to preserve inputs and reports for the
+existing `replay` and `report` commands. No model calls or candidate execution occur.
+See [the input contract and proposed pilot criteria](docs/cost-evaluation.md) for
+units, currencies, provenance, quality metrics, limitations, and future real records.
+
 ## Evidence and acceptance
 
 The version-1 input format is demonstrated by
