@@ -1,0 +1,130 @@
+{
+  "acceptance": {
+    "checks_reviewed": true,
+    "reviewer": "fixture-reviewer"
+  },
+  "baseline": {
+    "files": {
+      "calculator.py": "def add(a, b):\n    return a + b\n"
+    },
+    "version": "python-add-v1"
+  },
+  "candidates": [
+    {
+      "context": {
+        "baseline": "c8b56b070aafd3574b9b278d21416f122193a2ca421343a0bbffb01916551584",
+        "contract": "cc7c26e8dc8d2b511d69c6552a4aed4f9dad13ef06e3e9d605ca8a5d6267f862",
+        "policy": "151e08cfd0a6366f96dab34dc8db7ad4d51b369ced312c128547aa12d60007b5"
+      },
+      "generator": "fixture-generator",
+      "id": "passing",
+      "observations": {
+        "add(-2, 3) == 1": {
+          "independent": true,
+          "verifier": true
+        },
+        "add(2, 3) == 5": {
+          "independent": true,
+          "verifier": true
+        }
+      },
+      "patch": "--- a/calculator.py\n+++ b/calculator.py\n@@ -1,2 +1,3 @@\n def add(a, b):\n+    \"\"\"Add two integers.\"\"\"\n     return a + b\n"
+    },
+    {
+      "context": {
+        "baseline": "c8b56b070aafd3574b9b278d21416f122193a2ca421343a0bbffb01916551584",
+        "contract": "cc7c26e8dc8d2b511d69c6552a4aed4f9dad13ef06e3e9d605ca8a5d6267f862",
+        "policy": "151e08cfd0a6366f96dab34dc8db7ad4d51b369ced312c128547aa12d60007b5"
+      },
+      "generator": "fixture-generator",
+      "id": "genuine_regression",
+      "observations": {
+        "add(-2, 3) == 1": {
+          "independent": false,
+          "verifier": false
+        },
+        "add(2, 3) == 5": {
+          "independent": false,
+          "verifier": false
+        }
+      },
+      "patch": "--- a/calculator.py\n+++ b/calculator.py\n@@ -1,2 +1,2 @@\n def add(a, b):\n-    return a + b\n+    return a - b\n"
+    },
+    {
+      "context": {
+        "baseline": "c8b56b070aafd3574b9b278d21416f122193a2ca421343a0bbffb01916551584",
+        "contract": "cc7c26e8dc8d2b511d69c6552a4aed4f9dad13ef06e3e9d605ca8a5d6267f862",
+        "policy": "151e08cfd0a6366f96dab34dc8db7ad4d51b369ced312c128547aa12d60007b5"
+      },
+      "generator": "fixture-generator",
+      "id": "faulty_verifier",
+      "observations": {
+        "add(-2, 3) == 1": {
+          "independent": true,
+          "verifier": false
+        },
+        "add(2, 3) == 5": {
+          "independent": true,
+          "verifier": false
+        }
+      },
+      "patch": "--- a/calculator.py\n+++ b/calculator.py\n@@ -1,2 +1,3 @@\n def add(a, b):\n+    \"\"\"Add two integers.\"\"\"\n     return a + b\n"
+    },
+    {
+      "context": {
+        "baseline": "c8b56b070aafd3574b9b278d21416f122193a2ca421343a0bbffb01916551584",
+        "contract": "29eb534af16bfd9b6cb80395c608ad7d9c5cdb5dcb79bc1addf14eb509bd1599",
+        "policy": "151e08cfd0a6366f96dab34dc8db7ad4d51b369ced312c128547aa12d60007b5"
+      },
+      "generator": "fixture-generator",
+      "id": "changed_contract",
+      "observations": {
+        "add(-2, 3) == 1": {
+          "independent": true,
+          "verifier": true
+        },
+        "add(2, 3) == 5": {
+          "independent": true,
+          "verifier": true
+        }
+      },
+      "patch": "--- a/calculator.py\n+++ b/calculator.py\n@@ -1,2 +1,3 @@\n def add(a, b):\n+    \"\"\"Add two integers.\"\"\"\n     return a + b\n"
+    },
+    {
+      "context": {
+        "baseline": "c8b56b070aafd3574b9b278d21416f122193a2ca421343a0bbffb01916551584",
+        "contract": "cc7c26e8dc8d2b511d69c6552a4aed4f9dad13ef06e3e9d605ca8a5d6267f862",
+        "policy": "151e08cfd0a6366f96dab34dc8db7ad4d51b369ced312c128547aa12d60007b5"
+      },
+      "generator": "fixture-generator",
+      "id": "insufficient_evidence",
+      "observations": {
+        "add(-2, 3) == 1": {
+          "independent": null,
+          "verifier": true
+        },
+        "add(2, 3) == 5": {
+          "independent": null,
+          "verifier": true
+        }
+      },
+      "patch": "--- a/calculator.py\n+++ b/calculator.py\n@@ -1,2 +1,3 @@\n def add(a, b):\n+    \"\"\"Add two integers.\"\"\"\n     return a + b\n"
+    }
+  ],
+  "contract": {
+    "checks": [
+      "add(2, 3) == 5",
+      "add(-2, 3) == 1"
+    ],
+    "invariants": [
+      "Preserve integer addition, including negative operands."
+    ],
+    "version": "add-v1"
+  },
+  "goal": "Document integer addition without changing behavior.",
+  "policy": {
+    "human_approval_required": true,
+    "version": "review-v1"
+  },
+  "version": 1
+}

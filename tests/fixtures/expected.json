@@ -1,0 +1,27 @@
+{
+  "changed_contract": [
+    "unknown",
+    "changed_contract",
+    "accepted"
+  ],
+  "faulty_verifier": [
+    "unknown",
+    "faulty_verifier",
+    "refused"
+  ],
+  "genuine_regression": [
+    "refused",
+    "genuine_regression",
+    "refused"
+  ],
+  "insufficient_evidence": [
+    "unknown",
+    "insufficient_evidence",
+    "accepted"
+  ],
+  "passing": [
+    "accepted",
+    "checks_passed",
+    "accepted"
+  ]
+}

@@ -24,12 +24,11 @@ share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
-MANIFEST
+# Curated manifests are evidence; do not ignore MANIFEST or *.manifest globally.
 
 # PyInstaller
 #   Usually these files are written by a python script from a template
 #   before PyInstaller builds the exe, so as to inject date/other infos into it.
-*.manifest
 *.spec
 
 # Installer logs
@@ -218,3 +217,14 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Local Axiom_FoRgE runtime evidence (curated fixtures remain tracked)
+/.axiom-forge/
+
+# Preserve curated evidence even when a fixture name matches a generic rule above.
+!/tests/fixtures/
+!/tests/fixtures/**
+!/schemas/
+!/schemas/**
+!/manifests/
+!/manifests/**
