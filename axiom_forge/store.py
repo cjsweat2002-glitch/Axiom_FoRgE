@@ -3,7 +3,37 @@
 import os
 from pathlib import Path
 
+from . import ambiguity, cost
 from .workflow import ENGINE, canonical, decode, evaluate, fields, fingerprint, require
+
+
+def prepare(raw: bytes, engine: str) -> dict[str, bytes]:
+    """Versioned deterministic artifacts; fixture-v1 output stays unchanged."""
+    require(engine in (ENGINE, ambiguity.ENGINE, cost.ENGINE), "unsupported event engine")
+    if engine == cost.ENGINE:
+        report = cost.analyze(raw)
+        case = decode(raw)
+        extra = {f"evidence:{item['id']}": item["text"].encode("utf-8")
+                 for item in case["evidence"]}
+        extra["acceptance"] = canonical(case["acceptance"])
+        extra.update({f"candidate:{s}:{r}:{a}": attempt["artifact"].encode("utf-8")
+                      for s, strategy in enumerate(case["strategies"])
+                      for r, run in enumerate(strategy["runs"])
+                      for a, attempt in enumerate(run["attempts"])
+                      if attempt["artifact"] is not None})
+    elif engine == ambiguity.ENGINE:
+        report = ambiguity.analyze(raw)
+        case = decode(raw)
+        extra = {f"evidence:{item['id']}": item["text"].encode("utf-8")
+                 for item in case["evidence"]}
+    else:
+        case = decode(raw)
+        report = evaluate(case)
+        extra = {f"patch:{item['id']}": item["patch"].encode("utf-8")
+                 for item in case["candidates"]}
+    return {"input": raw, "report": canonical(report),
+            **{name: canonical(case[name]) for name in ("baseline", "contract", "policy")},
+            **extra}
 
 
 class EvidenceStore:
@@ -42,31 +72,26 @@ class EvidenceStore:
             require(type(event["sequence"]) is int and event["sequence"] == sequence
                     and event["previous"] == previous,
                     "event lineage mismatch")
-            require(event["engine"] == ENGINE, "unsupported event engine")
+            require(event["engine"] in (ENGINE, ambiguity.ENGINE, cost.ENGINE), "unsupported event engine")
             # Every retained event must be coherent before append or replay.
-            self._validate_artifacts(event["artifacts"])
+            self._validate_artifacts(event["artifacts"], event["engine"])
             previous = fingerprint(data)
             events.append(event)
         return events
 
-    def _validate_artifacts(self, artifacts: dict) -> None:
+    def _validate_artifacts(self, artifacts: dict, engine: str) -> None:
         required = {"input", "report", "baseline", "contract", "policy"}
         require(isinstance(artifacts, dict) and required <= artifacts.keys(),
                 "invalid event artifacts")
         for digest in artifacts.values():
             self.get(digest)
-        case = decode(self.get(artifacts["input"]))
-        report = evaluate(case)
-        require(canonical(report) == self.get(artifacts["report"]), "replay result mismatch")
-        expected = {"input": artifacts["input"], "report": fingerprint(canonical(report)),
-                    **report["context"],
-                    **{f"patch:{c['id']}": fingerprint(c['patch'].encode("utf-8"))
-                       for c in case["candidates"]}}
+        content = prepare(self.get(artifacts["input"]), engine)
+        require(content["report"] == self.get(artifacts["report"]), "replay result mismatch")
+        expected = {name: fingerprint(data) for name, data in content.items()}
         require(artifacts == expected, "artifact lineage mismatch")
 
-    def record(self, raw: bytes) -> dict:
-        case = decode(raw)
-        report = evaluate(case)
+    def record(self, raw: bytes, *, engine: str = ENGINE) -> dict:
+        content = prepare(raw, engine)
         self.root.mkdir(parents=True, exist_ok=True)
         lock = self.root / ".writer-lock"
         try:
@@ -75,18 +100,14 @@ class EvidenceStore:
             raise ValueError("evidence store is locked; another writer or interrupted run needs review") from None
         try:
             events = self.events()
-            artifacts = {"input": self.put(raw), "report": self.put(canonical(report))}
-            for name in ("baseline", "contract", "policy"):
-                artifacts[name] = self.put(canonical(case[name]))
-            for candidate in case["candidates"]:
-                artifacts[f"patch:{candidate['id']}"] = self.put(candidate["patch"].encode("utf-8"))
+            artifacts = {name: self.put(data) for name, data in content.items()}
             directory = self.root / "events"
             directory.mkdir(exist_ok=True)
             sequence = len(events) + 1
             previous = None
             if events:
                 previous = fingerprint((directory / f"{sequence - 1:08d}.json").read_bytes())
-            event = {"sequence": sequence, "previous": previous, "engine": ENGINE,
+            event = {"sequence": sequence, "previous": previous, "engine": engine,
                      "artifacts": artifacts}
             with (directory / f"{sequence:08d}.json").open("xb") as stream:
                 stream.write(canonical(event))
